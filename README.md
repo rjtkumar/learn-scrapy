@@ -1,0 +1,1 @@
+Following the ScrapeOps tutorial on python scrapy and more.
