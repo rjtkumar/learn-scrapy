@@ -62,9 +62,12 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "chocolatescraper.pipelines.ChocolatescraperPipeline": 300,
-#}
+
+# Telling scrap to use these pipelines, smaller number executes first
+ITEM_PIPELINES = {
+   "chocolatescraper.pipelines.PriceToUSDPipeline": 100,
+   "chocolatescraper.pipelines.DuplicatesPipeline" : 200
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
