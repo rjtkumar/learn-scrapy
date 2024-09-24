@@ -1,0 +1,24 @@
+To create a scrapy project:
+    > scrapy startproject <project_name>
+    > scrapy startproject chocolatescraper
+
+To create a spider, go inside the project directory:
+    > scrapy genspider <spider_name> <URL to be scraped>
+    chocolatescraper> scrapy genspider chocolate "https://www.chocolate.co.uk/collections/all"
+
+To list all spiders in a project, go inside the project directoryL
+    chocolatescraper> scrapy list
+
+To open the scrapy shsell:
+    > scrapy shell
+
+To run a spider:
+    project_directory> scrapy crawl <spider_name>
+    chocolatescraper> scrapy crawl chocolatespider
+    To save teh scraped data as a:
+        (json) chocolatescraper> scrapy crawl chocolatespider -o mydata.json
+        (csv) chocolatescraper> scrapy crawl chocolatespider -o mydata.csv
+        (json-lines) chocolatescraper> scrapy crawl chocolatespider -o mydata.jsonl
+    -o (lowercase) option to append to teh end of the file if it already exists
+    -O (uppercase) will delete any existing files of the same name and create new ones
+
