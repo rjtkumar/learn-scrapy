@@ -1,27 +1,24 @@
-"""Built following : Create Your First Scrapy Spider - Python Scrapy Beginner Series [Part 1] by ScrapeOps on youtube
+"""Cleaning & Post-Processing Scrapy Data - Python Scrapy Beginners Series (Part 2) by ScrapeOps on youtube
 https://youtu.be/NkIlpHTFCIE?si=tdZ7LHLH30w_bGuz"""
 import scrapy
-
+from chocolatescraper.items import ChocolateProduct # importing the scrapy item
 
 class ChocolatespiderSpider(scrapy.Spider):
-    name = "chocolatespider" # name of the spider
+    name = "chocolatespider"
     allowed_domains = ["chocolate.co.uk"]
     start_urls = ["https://www.chocolate.co.uk/collections/all"] # domain scrapy will start scraping from
 
-    # Appropriate selector for each product found using scrapy shell and browsers dev tools
-    # product.css("a.product-item-meta__title::text").get()
-    # product.css("span.price").get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>', "").replace("</span>", "")
-    # product.css("a.product-item-meta__title").attrib["href"]
-
     def parse(self, response):
         products = response.css("product-item")
+        
+        # Refactoring to use scrapy.Items for better organization of code
+        product_item = ChocolateProduct()
         for product in products:
-            yield {
-                "name" : product.css("a.product-item-meta__title::text").get(),
-                "price" : product.css("span.price").get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>', "").replace("</span>", ""),
-                "url" : product.css("a.product-item-meta__title").attrib["href"]
-            }  
-                
+            product_item["name"] = product.css("a.product-item-meta__title::text").get()
+            product_item["price"] = product.css("span.price").get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>', "").replace("</span>", "")
+            product_item["url"] = product.css("a.product-item-meta__title").attrib["href"]
+            yield product_item    
+        
         # Finding the link to the next page
         # >>> response.css('[rel="next"]::attr(href)').get()
         # '/collections/all?page=2'
