@@ -8,6 +8,7 @@
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 
+import mysql.connector
 
 class ChocolatescraperPipeline:
     def process_item(self, item, spider):
@@ -38,3 +39,24 @@ class DuplicatesPipeline:
             return item
 # Just declaring won't have scrapy use our pipelines,
 # We must tell Scrapy to use our pipelines explicitly through the settings.py file
+
+class SaveToMySQLPipeline(object):
+    def __init__(self):
+        self.create_connection()
+    
+    def create_connection(self):
+        self.connection = mysql.connector.connect(
+            host = "localhost",
+            user = "chocolatescraper",
+            password= "password",
+            database = "chocolates"
+            )
+        self.curr = self.connection.cursor()
+    def process_item (self, item, spider):
+        self.store_db(item)
+        return item
+    def store_db (self, item):
+        command = f"INSERT INTO chocolateproduct (name, price, url) VALUES ('{item["name"]}', {item['price']}, '{item['url']}')"
+        print(command)
+        self.curr.execute(command)
+        self.connection.commit()

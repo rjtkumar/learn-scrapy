@@ -66,7 +66,8 @@ ROBOTSTXT_OBEY = True
 # Telling scrap to use these pipelines, smaller number executes first
 ITEM_PIPELINES = {
    "chocolatescraper.pipelines.PriceToUSDPipeline": 100,
-   "chocolatescraper.pipelines.DuplicatesPipeline" : 200
+   "chocolatescraper.pipelines.DuplicatesPipeline" : 200,
+   "chocolatescraper.pipelines.SaveToMySQLPipeline": 500 # storing the item to our MySQL database
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
