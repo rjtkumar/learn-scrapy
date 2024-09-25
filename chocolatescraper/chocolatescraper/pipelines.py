@@ -56,7 +56,8 @@ class SaveToMySQLPipeline(object):
         self.store_db(item)
         return item
     def store_db (self, item):
-        command = f"INSERT INTO chocolateproduct (name, price, url) VALUES ('{item["name"]}', {item['price']}, '{item['url']}')"
-        print(command)
-        self.curr.execute(command)
+        try:
+            self.curr.execute(f"INSERT INTO chocolateproduct (name, price, url) VALUES ('{item["name"]}', {item['price']}, '{item['url']}')")
+        except BaseException as e:
+            print(e)
         self.connection.commit()
