@@ -1,13 +1,28 @@
-"""Cleaning & Post-Processing Scrapy Data - Python Scrapy Beginners Series (Part 2) by ScrapeOps on youtube
-https://youtu.be/NkIlpHTFCIE?si=tdZ7LHLH30w_bGuz"""
+"""Bypassing Restrictions - Python Scrapy Beginners Series (Part 4)
+https://youtu.be/NiFuoJw0sn8?si=Mq0-84RTn2FSJ1i0"""
 import scrapy
 from chocolatescraper.items import ChocolateProduct # importing the scrapy item
 from chocolatescraper.itemloaders import ChocolateProductLoader # importing the item loader
+from urllib.parse import urlencode
+import apikeys
+
+def get_proxy_url (url):
+    """Builds the proxy url"""
+    proxy_params = {
+        "api_key" : apikeys.scrapeops_api_key,
+        "url" : url
+    }
+    proxy_url = "https://proxy.scrapeops.io/v1/?" + urlencode(proxy_params)
+    return proxy_url 
 
 class ChocolatespiderSpider(scrapy.Spider):
     name = "chocolatespider"
-    allowed_domains = ["chocolate.co.uk"]
-    start_urls = ["https://www.chocolate.co.uk/collections/all"] # domain scrapy will start scraping from
+    
+    def start_requests(self):
+        """start_requests generates the first set of requests for a spider
+        we could've used the default implementation but to be able to use our proxy we've written our own implementation"""
+        start_url = "https://www.chocolate.co.uk/collections/all"
+        yield scrapy.Request(url = get_proxy_url(start_url), callback= self.parse)
 
     def parse(self, response):
         products = response.css("product-item")
@@ -27,4 +42,5 @@ class ChocolatespiderSpider(scrapy.Spider):
             next_page = response.css('[rel="next"]::attr(href)').get()
             if next_page is not None:
                 next_page_url = "https://www.chocolate.co.uk" + next_page
-                yield response.follow(next_page_url, callback = self.parse)
+                # take te next_page_url and make a new url out of it to make the request through the proxy aggregator
+                yield response.follow(get_proxy_url(next_page_url), callback = self.parse)

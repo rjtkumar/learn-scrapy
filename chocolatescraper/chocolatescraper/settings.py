@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = "chocolatescraper.spiders"
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 1 # settingn cocncurrent requests limit as per our proxy aggregator
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -69,7 +69,7 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
    "chocolatescraper.pipelines.PriceToUSDPipeline": 100,
    "chocolatescraper.pipelines.DuplicatesPipeline" : 200,
-   "chocolatescraper.pipelines.SaveToMySQLPipeline": 500 # storing the item to our MySQL database
+   # "chocolatescraper.pipelines.SaveToMySQLPipeline": 500 # storing the item to our MySQL database
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
