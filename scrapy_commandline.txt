@@ -28,3 +28,6 @@ Saving scraped data to an AWS bucket
         > pip3 install botocore
     Once we havev teh library we can store to the bucket using the following command template
         chocolatescraper> scrapy crawl chocolatespider -O s3://aws_key:aws_secret@mybucketname/path/to/destination/scrapeddata.csv:csv
+
+Library for fake user agents downloader middleware:
+    > pip install scrapy-user-agents
