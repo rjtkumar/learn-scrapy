@@ -12,13 +12,17 @@ BOT_NAME = "bookscraper"
 SPIDER_MODULES = ["bookscraper.spiders"]
 NEWSPIDER_MODULE = "bookscraper.spiders"
 
-# Implementing dynamic path and file name
-# %(name)s is replaced by the spider name
-# %(time)s is replaced by the time the spider is run
-# outputs ./data/books/books_2024-10-01T20-15-19+00-00.csv
+# Implements dynamic path and filenames along with data being stored in batches which is useful when scraping large amounts of data
+# When saving data in batches make sure batch_id is part of the dynamic file or path name
+# Creates multiple files for ever run, example:
+# ./data/books/books_2024-10-01T20-21-30+00-00_batch_1.csv
+# ./data/books/books_2024-10-01T20-21-30+00-00_batch_2.csv
+# ./data/books/books_2024-10-01T20-21-30+00-00_batch_3.csv
+# ./data/books/books_2024-10-01T20-21-30+00-00_batch_4.csv
 FEEDS = {
-    "data/%(name)s/%(name)s_%(time)s.csv" : {
-        "format" : "csv"
+    "data/%(name)s/%(name)s_%(time)s_batch_%(batch_id)s.csv" : {
+        "format" : "csv",
+        "batch_item_count" : 5
     }
 }
 
