@@ -12,9 +12,14 @@ BOT_NAME = "bookscraper"
 SPIDER_MODULES = ["bookscraper.spiders"]
 NEWSPIDER_MODULE = "bookscraper.spiders"
 
-# Creating a global feed for the project, every spider would use this
+# Implementing dynamic path and file name
+# %(name)s is replaced by the spider name
+# %(time)s is replaced by the time the spider is run
+# outputs ./data/books/books_2024-10-01T20-15-19+00-00.csv
 FEEDS = {
-    "data.csv" : {"format" : "csv"}
+    "data/%(name)s/%(name)s_%(time)s.csv" : {
+        "format" : "csv"
+    }
 }
 
 
