@@ -9,6 +9,15 @@ class BooksSpider(scrapy.Spider):
     start_urls = ["https://books.toscrape.com/"]
     base_url = "https://books.toscrape.com/"
 
+    # Spider specific feed
+    custom_settings = {
+        "FEEDS" : {
+            "data_spider.csv" : {
+                "format" : "csv"
+            }
+        }
+    }
+
     def parse(self, response):
         books = response.css("article.product_pod")
         for book in books:
