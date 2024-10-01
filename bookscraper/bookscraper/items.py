@@ -7,6 +7,9 @@ import scrapy
 
 
 class BookscraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    url = scrapy.Field()
+    image_url = scrapy.Field()
+    rating = scrapy.Field()
+    price = scrapy.Field()
+    in_stock = scrapy.Field()
